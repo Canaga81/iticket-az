@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import config from './config/config';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
 
@@ -22,8 +23,10 @@ import config from './config/config';
       synchronize: true,
       logging: true,
     }),
+    
     UserModule,
     AuthModule,
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
