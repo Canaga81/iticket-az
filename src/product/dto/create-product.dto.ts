@@ -23,10 +23,9 @@ export class CreateProductDto {
     description: string;
 
     @Type()
-    @IsString()
-    @ApiProperty()
-    @Length(3, 90)
-    history: string;
+    @IsOptional()
+    @ApiProperty({ type: [Date] })
+    eventDate: [Date, Date];
 
     @Type()
     @IsString()

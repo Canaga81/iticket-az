@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Product } from "src/entities/Product.entity";
-import { In, Repository } from "typeorm";
+import { And, Between, ILike, LessThanOrEqual, MoreThanOrEqual, Repository } from "typeorm";
 import { FindProductParams } from "./product.types";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
@@ -16,7 +16,52 @@ export class ProductService {
         private productRepo: Repository<Product>
     ) {}
 
-    async find( { where, select, relations }: FindProductParams = {} ) {
+    async find( { where, select, relations, filter }: FindProductParams = {} ) {
+
+        if (!where) where = {};
+
+        if(filter) {
+
+            if(filter.name) {
+                where.name = ILike(`%${filter.name}%`);
+            }
+
+            if(filter.place) {
+                where.place = ILike(`%${filter.place}%`);
+            }
+
+            if(filter.price) {
+                
+                const [min, max] = filter.price;
+
+                let price = [];
+                if (min > 0) {
+                    price.push(MoreThanOrEqual(min));
+                }
+                if (max > 0) {
+                    price.push(LessThanOrEqual(max));
+                }
+                if (price.length) {
+                    where.price = And(...price);
+                }
+
+            }
+
+            if(filter.categories) {
+                where.categories = filter.categories.map((categoryId) => {
+                    return {
+                        id: categoryId,
+                    }
+                })
+            }
+
+            if(filter.eventDate) {
+                const [startDate, endDate] = filter.eventDate;
+                where.eventDate = Between(startDate, endDate);
+            }
+
+        }
+
         return this.productRepo.find( { where, select, relations } )
     }
 

@@ -7,4 +7,13 @@ export interface FindProductParams {
     select?: Array<ProductKey>,
     relations?: string[],
 
+    filter?: {
+        name?: string,
+        price?: [number, number],
+        categories?: number[],
+        place?: string,
+        time?: string,
+        eventDate?: [Date, Date];
+    },
+
 }

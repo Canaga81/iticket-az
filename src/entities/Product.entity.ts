@@ -16,8 +16,8 @@ export class Product extends CommonEntity {
     @Column()
     description: string;
 
-    @Column()
-    history: string;
+    @Column({ type: 'timestamp', nullable: true })
+    eventDate: Date;
 
     @Column()
     place: string;
