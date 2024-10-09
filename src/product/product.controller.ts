@@ -17,7 +17,11 @@ export class ProductController {
     @Get()
     list(@Query() query: GetProductDto) {
         let price: [number, number] = [query.minPrice, query.maxPrice]
-        return this.productService.find( { relations: ['categories'], filter: {...query, price} } );
+        return this.productService.find( { 
+            relations: ['categories'], 
+            pagination: { limit: query.limit, page: query.page }, 
+            filter: {...query, price},
+        } );
     }
 
     @Get(':id')

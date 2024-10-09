@@ -39,4 +39,16 @@ export class GetProductDto {
     @ApiProperty({ type: [Date], description: 'Tədbirin tarixi aralığı', default: [new Date(), new Date()], required: false })
     eventDate: [Date, Date];
 
+    @Type()
+    @IsOptional()
+    @ApiProperty( { default: 5, required: false } )
+    @IsNumber( {}, {each: true} )
+    limit: number;
+
+    @Type()
+    @IsOptional()
+    @ApiProperty( { default: 0, required: false } )
+    @IsNumber( {}, {each: true} )
+    page: number;
+
 }

@@ -14,6 +14,10 @@ export interface FindProductParams {
         place?: string,
         time?: string,
         eventDate?: [Date, Date];
-    },
+    };
+    pagination?: {
+        limit: number,
+        page: number,
+    };
 
 }

@@ -16,7 +16,7 @@ export class ProductService {
         private productRepo: Repository<Product>
     ) {}
 
-    async find( { where, select, relations, filter }: FindProductParams = {} ) {
+    async find( { where, select, relations, filter, pagination }: FindProductParams = {} ) {
 
         if (!where) where = {};
 
@@ -31,7 +31,7 @@ export class ProductService {
             }
 
             if(filter.price) {
-                
+
                 const [min, max] = filter.price;
 
                 let price = [];
@@ -62,7 +62,16 @@ export class ProductService {
 
         }
 
-        return this.productRepo.find( { where, select, relations } )
+        return this.productRepo.find( { 
+            where, 
+            select, 
+            relations, 
+            take: pagination && pagination?.limit, 
+            skip: pagination && pagination.limit * pagination.page,
+            order: {
+                createdAt: 'DESC',
+            }
+        } )
     }
 
     async findOne( { where, select, relations }: FindProductParams = {}) {
