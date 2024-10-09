@@ -16,17 +16,19 @@ export class ProductService {
         private productRepo: Repository<Product>
     ) {}
 
-    async find( { where, select }: FindProductParams = {} ) {
-        return this.productRepo.find( { where, select, relations: ['categories'] } )
+    async find( { where, select, relations }: FindProductParams = {} ) {
+        return this.productRepo.find( { where, select, relations } )
     }
 
-    async findOne( { where, select }: FindProductParams = {}) {
-        return this.productRepo.findOne( { where, select, relations: ['categories'] } )
+    async findOne( { where, select, relations }: FindProductParams = {}) {
+        return this.productRepo.findOne( { where, select, relations } )
     }
 
     async create(params: CreateProductDto) {
+
+        const categories = await this.categoryService.findByIds(params.categories)
         
-        let product =  this.productRepo.create(params);
+        let product =  this.productRepo.create({...params, categories});
         await product.save();
         
         return product;

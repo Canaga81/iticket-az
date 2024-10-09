@@ -15,12 +15,12 @@ export class ProductController {
 
     @Get()
     list() {
-        return this.productService.find();
+        return this.productService.find( { relations: ['categories'] } );
     }
 
     @Get(':id')
     item(@Param('id') id: number) {
-        return this.productService.findOne( { where: { id } } );
+        return this.productService.findOne( { where: { id }, relations: ['categories'] } );
     }
 
     @Post()

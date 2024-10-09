@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsNumber, IsString, IsUrl, Length, MaxLength, Min } from "class-validator";
+import { IsNumber, IsOptional, IsString, IsUrl, Length, MaxLength, Min } from "class-validator";
 
 export class CreateProductDto {
 
@@ -39,5 +39,11 @@ export class CreateProductDto {
     @ApiProperty()
     @IsUrl()
     image: string;
+
+    @Type()
+    @IsNumber({}, { each: true })
+    @ApiProperty({ type: Number, isArray: true })
+    @IsOptional()
+    categories: number[];
 
 }

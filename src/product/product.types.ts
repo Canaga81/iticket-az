@@ -5,5 +5,6 @@ export interface FindProductParams {
     
     where?: FindOptionsWhere<Product>,
     select?: Array<ProductKey>,
+    relations?: string[],
 
 }
