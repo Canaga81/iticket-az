@@ -90,25 +90,22 @@ export class ProductService {
     }
 
     async update(id: number, params: UpdateProductDto) {
-        
-        let product = await this.findOne( { where: { id } } );
-
-        for(let key in params) {
-            if(key === 'categories') {
-
-                let categories = await this.categoryService.findByIds(params.categories)
-                product.categories.push(...categories);
-
-            }
-            else{
-                product[key] = params[key];
-            }
+        let product = await this.findOne({ where: { id } });
+    
+        for (let key in params) {
+          if (key === 'categories') {
+            product.categories = await this.categoryService.findByIds(
+              params.categories,
+            );
+          } else {
+            product[key] = params[key];
+          }
         }
-
+    
         await product.save();
+    
         return product;
-
-    }
+      }
 
     async delete(id: number) {
 

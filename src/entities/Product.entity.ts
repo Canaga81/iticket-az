@@ -2,7 +2,9 @@ import { Column, Entity, ManyToMany } from "typeorm";
 import { CommonEntity } from "./Common.entity";
 import { Category } from "./Category.entity";
 
+
 export type ProductKey = keyof Product
+
 
 @Entity()
 export class Product extends CommonEntity {
@@ -25,7 +27,7 @@ export class Product extends CommonEntity {
     @Column()
     image: string;
 
-    @ManyToMany(() => Category, (category) => category.products)
+    @ManyToMany(() => Category, (category) => category.products, { onDelete: 'CASCADE' })
     categories: Partial<Category>[]
 
 }
