@@ -27,6 +27,8 @@ import { OrderModule } from './order/order.module';
       password: config.database.password,
       database: config.database.name,
       entities: [`${__dirname}/**/*.entity.{ts,js}`],
+      migrations: [`${__dirname}/**/migrations/*.js`],
+      migrationsRun: true,
       synchronize: true,
       logging: true,
     }),
