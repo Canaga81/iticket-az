@@ -11,6 +11,8 @@ import {
   import { CategoryService } from './category.service';
   import { CreateCategoryDto } from './dto/create-category.dto';
   import { AuthGuard } from 'src/guards/auth.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { UserRoles } from 'src/common/enum/user-roles.enum';
 //   import { Roles } from 'src/common/decorators/roles.decorator';
 //   import { UserRoles } from 'src/common/enum/user-roles.enum';
   
@@ -32,6 +34,7 @@ import {
     @Post()
     @UseGuards(AuthGuard)
     @ApiBearerAuth()
+    @Roles(UserRoles.ADMIN, UserRoles.CONTENT_MANAGER)
     create(@Body() body: CreateCategoryDto) {
       return this.categoryService.create(body);
     }
@@ -39,6 +42,7 @@ import {
     @Delete(':id')
     @UseGuards(AuthGuard)
     @ApiBearerAuth()
+    @Roles(UserRoles.ADMIN)
     delete(@Param('id') id: number) {
       return this.categoryService.delete(id);
     }
