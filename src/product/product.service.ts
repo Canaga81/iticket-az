@@ -58,10 +58,10 @@ export class ProductService {
                 })
             }
 
-            if(filter.eventDate) {
-                const [startDate, endDate] = filter.eventDate;
-                where.eventDate = Between(startDate, endDate);
-            }
+            // if(filter.eventDate) {
+            //     const [startDate, endDate] = filter.eventDate;
+            //     where.eventDate = Between(startDate, endDate);
+            // }
 
         }
 

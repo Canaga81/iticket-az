@@ -34,10 +34,10 @@ export class GetProductDto {
     @Transform(({value}) => value?.split(','))
     categories: number[];
 
-    @Type(() => Date)
-    @IsOptional()
-    @ApiProperty({ type: [Date], description: 'Tədbirin tarixi aralığı', default: [new Date(), new Date()], required: false })
-    eventDate: [Date, Date];
+    // @Type(() => Date)
+    // @IsOptional()
+    // @ApiProperty({ type: [Date], description: 'Tədbirin tarixi aralığı', default: [new Date(), new Date()], required: false })
+    // eventDate: [Date, Date];
 
     @Type()
     @IsOptional()

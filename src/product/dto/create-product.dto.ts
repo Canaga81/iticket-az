@@ -23,11 +23,6 @@ export class CreateProductDto {
     description: string;
 
     @Type()
-    @IsOptional()
-    @ApiProperty({ type: [Date] })
-    eventDate: [Date, Date];
-
-    @Type()
     @IsString()
     @ApiProperty()
     @Length(0, 120)

@@ -19,8 +19,8 @@ export class Product extends CommonEntity {
     @Column()
     description: string;
 
-    @Column({ type: 'timestamp', nullable: true })
-    eventDate: Date;
+    // @Column({ type: 'timestamp', nullable: true })
+    // eventDate: Date;
 
     @Column()
     place: string;
