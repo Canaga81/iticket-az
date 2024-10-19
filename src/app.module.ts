@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService, } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { extname, join } from 'path';
 
 import config from './config/config';
 
@@ -12,6 +13,10 @@ import { ProfileModule } from './profile/profile.module';
 import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
 import { OrderModule } from './order/order.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { UploadModule } from './upload/upload.module';
+import { diskStorage } from 'multer';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
 
@@ -33,12 +38,18 @@ import { OrderModule } from './order/order.module';
       logging: true,
     }),
 
+    ServeStaticModule.forRoot({
+      serveRoot: '/uploads',
+      rootPath: join(__dirname, '../uploads'),
+    }),
+
     UserModule,
     AuthModule,
     ProfileModule,
     ProductModule,
     CategoryModule,
     OrderModule,
+    UploadModule,
 
   ],
 

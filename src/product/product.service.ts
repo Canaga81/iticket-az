@@ -6,11 +6,14 @@ import { FindProductParams } from "./product.types";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { CategoryService } from "src/category/category.service";
+import { UploadService } from "src/upload/upload.service";
+import { ImageEntity } from "src/entities/Image.entity";
 
 @Injectable()
 export class ProductService {
 
     constructor(
+        private uploadService: UploadService,
         private categoryService: CategoryService,
         @InjectRepository(Product)
         private productRepo: Repository<Product>
@@ -80,9 +83,10 @@ export class ProductService {
 
     async create(params: CreateProductDto) {
 
-        const categories = await this.categoryService.findByIds(params.categories)
+        const categories = await this.categoryService.findByIds(params.categories);
+        const images = params.images.map((id) => ( { id } ) )
         
-        let product =  this.productRepo.create({...params, categories});
+        let product =  this.productRepo.create({...params, categories, images});
         await product.save();
         
         return product;
@@ -90,6 +94,7 @@ export class ProductService {
     }
 
     async update(id: number, params: UpdateProductDto) {
+
         let product = await this.findOne({ where: { id } });
     
         for (let key in params) {
@@ -97,6 +102,8 @@ export class ProductService {
             product.categories = await this.categoryService.findByIds(
               params.categories,
             );
+          } else if(key === 'images'){
+            product.images = params.images.map((id) => ( { id } ) )
           } else {
             product[key] = params[key];
           }
@@ -107,14 +114,16 @@ export class ProductService {
         return product;
       }
 
-    async delete(id: number) {
-
-        let result = await this.productRepo.delete( { id } );
-        if (result.affected === 0) throw new NotFoundException();
+      async delete(id: number) {
+        let product = await this.productRepo.findOne({ where: { id } });
+        if (!product) throw new NotFoundException();
+    
+        await this.uploadService.deleteImages(product.images as ImageEntity[]);
+    
+        await this.productRepo.delete({ id });
         return {
-            message: 'Məhsul uğurla silindi.',
+          message: 'Product is deleted successfully',
         };
-
-    }
+      }
 
 }
